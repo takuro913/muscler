@@ -16,6 +16,9 @@ class Training extends Model
     'created_at',
     'updated_at',
   ];
+  /*protected $fillable=[
+    'training','comment'
+  ];*/
  
   // ? ’Ç‰Á
   public static function getAllOrderByUpdated_at()
