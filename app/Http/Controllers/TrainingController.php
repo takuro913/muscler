@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Training;
+use Auth;
+use App\Models\User;
 
 
 class TrainingController extends Controller
@@ -43,9 +45,9 @@ class TrainingController extends Controller
           ->withInput()
           ->withErrors($validator);
       }
-        // create()は最初から用意されている関数
-        // 戻り値は挿入されたレコードの情報
-      $result = Training::create($request->all());
+        // ? 編集 フォームから送信されてきたデータとユーザIDをマージし，DBにinsertする
+      $data = $request->merge(['user_id' => Auth::user()->id])->all();
+      $result = Training::create($data);
         // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
       return redirect()->route('training.index');
     }
@@ -62,24 +64,52 @@ class TrainingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $training = Training::find($id);
+        return response()->view('training.edit', compact('training'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+            //バリデーション
+      $validator = Validator::make($request->all(), [
+        'training' => 'required | max:191',
+        'comment' => 'required',
+      ]);
+      //バリデーション:エラー
+      if ($validator->fails()) {
+        return redirect()
+          ->route('training.edit', $id)
+          ->withInput()
+          ->withErrors($validator);
+      }
+      //データ更新処理
+      $result = Training::find($id)->update($request->all());
+      return redirect()->route('training.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $result = Training::find($id)->delete();
+        return redirect()->route('training.index');
+
+    }
+    public function mydata()
+    {
+       // Userモデルに定義したリレーションを使用してデータを取得する．
+      $trainings = User::query()
+        ->find(Auth::user()->id)
+        ->userTrainings()
+        ->orderBy('created_at','desc')
+        ->get();
+      return response()->view('training.index', compact('trainings'));
     }
 }
