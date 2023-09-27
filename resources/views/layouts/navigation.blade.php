@@ -1,3 +1,5 @@
+<!-- resources/views/layouts/navigation.blade.php -->
+
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
   <!-- Primary Navigation Menu -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,6 +28,12 @@
         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
           <x-nav-link :href="route('training.create')" :active="request()->routeIs('training.create')">
             {{ __('投稿') }}
+          </x-nav-link>
+        </div>
+        <!-- 🔽 マイページへのリンクを追加 -->
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+          <x-nav-link :href="route('training.mypage')" :active="request()->routeIs('training.mypage')">
+            {{ __('マイページ') }}
           </x-nav-link>
         </div>
       </div>
@@ -92,6 +100,12 @@
     <div class="pt-2 pb-3 space-y-1">
       <x-responsive-nav-link :href="route('training.create')" :active="request()->routeIs('training.create')">
         {{ __('投稿') }}
+      </x-responsive-nav-link>
+    </div>
+    <!-- 🔽 マイページへのリンクを追加 -->
+    <div class="pt-2 pb-3 space-y-1">
+      <x-responsive-nav-link :href="route('training.mypage')" :active="request()->routeIs('training.mypage')">
+        {{ __('マイページ') }}
       </x-responsive-nav-link>
     </div>
 

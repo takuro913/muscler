@@ -16,7 +16,11 @@ use App\Http\Controllers\TrainingController;
 |
 */
 
-Route::resource('training', TrainingController::class);
+Route::middleware('auth')->group(function () {
+  Route::get('/training/mypage', [TrainingController::class, 'mydata'])->name('training.mypage');
+  
+  Route::resource('training', TrainingController::class);
+});
 
 Route::get('/', function () {
     return view('welcome');
