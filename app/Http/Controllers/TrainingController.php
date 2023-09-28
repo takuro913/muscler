@@ -16,8 +16,8 @@ class TrainingController extends Controller
      */
     public function index()
     {
-       $training = Training::getAllOrderByUpdated_at();
-       return response()->view('training.index',compact('training'));
+       $trainings = Training::getAllOrderByUpdated_at();
+       return response()->view('training.index',compact('trainings'));
     }
 
     /**

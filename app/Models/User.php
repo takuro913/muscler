@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,5 +45,18 @@ class User extends Authenticatable
     public function userTrainings()
     {
       return $this->hasMany(Training::class);
+    }
+    public function trainings()
+    {
+        return $this->belongsToMany(Training::class)->withTimestamps();
+    }
+    public function followings()
+    {
+    return $this->belongsToMany(self::class, "follows", "user_id", "following_id")->withTimestamps();
+    }
+
+    public function followers()
+    {
+    return $this->belongsToMany(self::class, "follows", "following_id", "user_id")->withTimestamps();
     }
 }
