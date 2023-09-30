@@ -5,6 +5,8 @@
     <h2 class="font-semibold text-xl text-gray-800 leading-tight dark:text-gray-200">
      @if(Request::routeIs('training.mypage')) 
      {{ __('マイページ') }}
+     @elseif(Request::routeIs('training.timeline'))
+     {{ __('タイムライン') }}
      @else
      {{ __('ホーム') }}
      @endif
@@ -26,7 +28,10 @@
               <tr class="hover:bg-gray-lighter">
                 <td class="py-4 px-6 border-b border-gray-light dark:border-gray-600">
                   <div class="flex">
-                    <p class="text-left text-gray-800 dark:text-gray-200">{{$training->user->name}}</p>
+                    
+                    <a href="{{ route('follow.show', $training->user->id) }}">
+                      <p class="text-left text-gray-dark dark:text-gray-200">{{$training->user->name}}</p>
+                    </a>
                     <!-- follow 状態で条件分岐 -->
                     @if(Auth::user()->followings()->where('users.id', $training->user->id)->exists())
                     <!-- unfollow ボタン -->
