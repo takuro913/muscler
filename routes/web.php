@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\SearchController;
 
 
 
@@ -20,6 +21,15 @@ use App\Http\Controllers\FollowController;
 */
 
 Route::middleware('auth')->group(function () {
+     // ? 追加（検索画面）
+  Route::get('/training/search/input', [SearchController::class, 'create'])->name('search.input');
+  // ? 追加（検索処理）
+  Route::get('/training/search/result', [SearchController::class, 'index'])->name('search.result');
+  
+  Route::get('/training/timeline', [TrainingController::class, 'timeline'])->name('training.timeline');
+
+  Route::get('user/{user}', [FollowController::class, 'show'])->name('follow.show');
+
   Route::post('user/{user}/follow', [FollowController::class, 'store'])->name('follow');
   Route::post('user/{user}/unfollow', [FollowController::class, 'destroy'])->name('unfollow');
 
